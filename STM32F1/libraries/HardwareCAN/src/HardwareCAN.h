@@ -12,6 +12,9 @@
  * Defines the possible SPI communication speeds.
  */
 
+#define HARDWARECAN_IRQ_MODE 1
+#define HARDWARECAN_POLL_MODE 2
+
 class HardwareCAN
 {
 private:
@@ -30,7 +33,7 @@ public:
 		return Port->RF0R;
 	}
 
-	void set_pool_mode(void);
+	void set_poll_mode(void);
 	void set_irq_mode(void);
 
     CAN_STATUS begin(CAN_SPEED speed, uint32 mode);
@@ -54,6 +57,8 @@ public:
 	uint8 fifo_ready(CAN_FIFO fifo);
 	CanMsg* read(CAN_FIFO fifo, CanMsg* msg);
 	void release(CAN_FIFO fifo);
+
+	uint8 mode;
 };
 
 #endif

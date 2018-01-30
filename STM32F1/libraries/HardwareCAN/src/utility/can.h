@@ -291,6 +291,7 @@ void can_rx_queue_clear(void);
 uint8 can_rx_available(void);
 uint8 can_frame_lost(void);
 CanMsg* can_rx_queue_get(void);
+void can_rx_copy_from_fifos(void);
 CanMsg* can_read(CAN_Port* CANx, CAN_FIFO fifo, CanMsg* msg);
 void can_rx_release(CAN_Port* CANx, CAN_FIFO fifo);
 void can_rx_queue_free(void);
@@ -298,9 +299,9 @@ CAN_TX_MBX can_transmit(CAN_Port* CANx, CanMsg* msg);
 CAN_STATUS can_tx_status(CAN_Port* CANx, CAN_TX_MBX mbx);
 
 /**
-  * @brief	Set pooling mode
+  * @brief	Set polling mode
   */
-static inline void can_set_pool_mode(CAN_Port* CANx)
+static inline void can_set_poll_mode(CAN_Port* CANx)
 {
 	CANx->IER &= ~(CAN_IER_FMPIE0 | CAN_IER_FMPIE1);
 }

@@ -29,13 +29,15 @@ CAN_STATUS HardwareCAN::begin(CAN_SPEED speed, uint32 mode)
 	return can_status();
 }
 
-void HardwareCAN::set_pool_mode(void)
+void HardwareCAN::set_poll_mode(void)
 {
-	return can_set_pool_mode(Port);
+	mode = HARDWARECAN_POLL_MODE;
+	return can_set_poll_mode(Port);
 }
 
 void HardwareCAN::set_irq_mode(void)
 {
+	mode = HARDWARECAN_IRQ_MODE;
 	return can_set_irq_mode(Port);
 }
 
@@ -56,6 +58,9 @@ CAN_TX_MBX HardwareCAN::send(CanMsg* message)
 
 uint8 HardwareCAN::available(void)
 {
+	if(mode == HARDWARECAN_POLL_MODE) {
+		can_rx_copy_from_fifos();
+	}
 	return can_rx_available();
 }
 
