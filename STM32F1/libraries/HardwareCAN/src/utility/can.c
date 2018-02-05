@@ -197,7 +197,7 @@ CAN_STATUS can_init(CAN_Port* CANx, uint32 control, uint8 speed)
     
 	nvic_irq_enable(NVIC_USB_HP_CAN_TX);
 
-	CANx->IER = (CAN_IER_FMPIE0 | CAN_IER_FMPIE1 | CAN_IER_TMEIE);
+	CANx->IER &= ~(CAN_IER_FMPIE0 | CAN_IER_FMPIE1 | CAN_IER_TMEIE);
 
 	if (can_init_leave(CANx) == CAN_OK)
 	{

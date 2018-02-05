@@ -303,7 +303,7 @@ CAN_STATUS can_tx_status(CAN_Port* CANx, CAN_TX_MBX mbx);
   */
 static inline void can_set_poll_mode(CAN_Port* CANx)
 {
-	CANx->IER &= ~(CAN_IER_FMPIE0 | CAN_IER_FMPIE1);
+	CANx->IER &= ~(CAN_IER_FMPIE0 | CAN_IER_FMPIE1 | CAN_IER_TMEIE);
 }
 
 /**
@@ -311,7 +311,7 @@ static inline void can_set_poll_mode(CAN_Port* CANx)
   */
 static inline void can_set_irq_mode(CAN_Port* CANx)
 {
-	CANx->IER |= (CAN_IER_FMPIE0 | CAN_IER_FMPIE1);
+	CANx->IER |= (CAN_IER_FMPIE0 | CAN_IER_FMPIE1 | CAN_IER_TMEIE);
 }
 
 static inline uint8 can_fifo_ready(CAN_Port* CANx, CAN_FIFO fifo)
