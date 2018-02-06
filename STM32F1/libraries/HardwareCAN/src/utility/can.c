@@ -192,12 +192,12 @@ CAN_STATUS can_init(CAN_Port* CANx, uint32 control, uint8 speed)
 	CANx->BTR &= ~CAN_TIMING_MASK;			// Set the bit timing register
 	CANx->BTR |= (can_speed_table[speed].btr & CAN_TIMING_MASK);
 
+	CANx->IER &= ~(CAN_IER_FMPIE0 | CAN_IER_FMPIE1 | CAN_IER_TMEIE);
+
 	nvic_irq_enable(NVIC_USB_LP_CAN_RX0);	// Enable interrupts
 	nvic_irq_enable(NVIC_CAN_RX1);
     
 	nvic_irq_enable(NVIC_USB_HP_CAN_TX);
-
-	CANx->IER = (CAN_IER_FMPIE0 | CAN_IER_FMPIE1 | CAN_IER_TMEIE);
 
 	if (can_init_leave(CANx) == CAN_OK)
 	{
