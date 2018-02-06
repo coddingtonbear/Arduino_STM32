@@ -561,14 +561,18 @@ void can_rx_read(CAN_Port* CANx, CAN_FIFO fifo)
 	can_rx_release(CANx, fifo);
 }
 
+void can_rx_copy_from_fifos() {
+	while ((CAN1_BASE->RF0R & CAN_RF0R_FMP0) != 0)
+		can_rx_read(CAN1_BASE, CAN_FIFO0);		// message pending FIFO0
+	while ((CAN1_BASE->RF1R & CAN_RF1R_FMP1) != 0)
+		can_rx_read(CAN1_BASE, CAN_FIFO1);		// message pending FIFO1
+}
+
 uint8 __attribute__ ((interrupt)) CAN_RX0_IRQ_Handler(void)
 {
 	if (can_active)
 	{
-		while ((CAN1_BASE->RF0R & CAN_RF0R_FMP0) != 0)
-			can_rx_read(CAN1_BASE, CAN_FIFO0);		// message pending FIFO0
-		while ((CAN1_BASE->RF1R & CAN_RF1R_FMP1) != 0)
-			can_rx_read(CAN1_BASE, CAN_FIFO1);		// message pending FIFO1
+		can_rx_copy_from_fifos();
 	}
 	return can_active;								// return CAN active flag to USB handler
 }
