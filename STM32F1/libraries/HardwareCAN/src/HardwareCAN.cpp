@@ -18,13 +18,7 @@
  */
 CAN_STATUS HardwareCAN::begin(CAN_SPEED speed, uint32 mode)
 {
-/*  Begin Fix JMD
-	if (can_init(Port, CAN_MCR_NART, CAN_SPEED_250) == CAN_OK)	
-		// NART empêche la réémission en cas de perte d'arbitrage d'où trames perdues
- */
-	Serial.end();						// disable USB interface -- JMD
 	if (can_init(Port, 0, speed) == CAN_OK)
- // End Fix JMD
 		return can_set_mode(Port, mode);
 	return can_status();
 }
