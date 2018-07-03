@@ -189,9 +189,24 @@ static void usb_resume(RESUME_STATE eResumeSetVal) {
     }
 }
 
+void __attribute__((weak)) USB_HP_CAN_TX_IRQHandler(void) 
+{ ; }
+
+void __irq_usb_hp_can_tx(void)
+{
+    USB_HP_CAN_TX_IRQHandler () ;
+}
+
+uint8 __attribute__((weak)) CAN_RX0_IRQ_Handler(void)
+{ return 0 ; }      // Dummy ISR 
+
 #define SUSPEND_ENABLED 1
 __weak void __irq_usb_lp_can_rx0(void) {
     uint16 istr = USB_BASE->ISTR;
+
+    if (CAN_RX0_IRQ_Handler()) {
+        return;
+    }
 
     /* Use USB_ISR_MSK to only include code for bits we care about. */
 
