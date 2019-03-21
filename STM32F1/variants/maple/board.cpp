@@ -158,6 +158,6 @@ extern const uint8 boardUsedPins[] __FLASH__ = {
  * As its a Medium Density device (F103RB), it only has 3 hardware serial devices. 
  */							
  
-DEFINE_HWSERIAL(Serial1, 1);
-DEFINE_HWSERIAL(Serial2, 2);
-DEFINE_HWSERIAL(Serial3, 3);
+DEFINE_HWSERIAL(Serial, 1);
+DEFINE_HWSERIAL(Serial1, 2);
+DEFINE_HWSERIAL(Serial2, 3);
