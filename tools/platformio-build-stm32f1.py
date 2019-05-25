@@ -123,7 +123,7 @@ def add_upload_protocol_defines(board, upload_protocol):
                 #"SERIAL_USB"
             ])
 
-    is_generic = board.startswith("generic") or board == "hytiny_stm32f103t"
+    is_generic = board.startswith("generic") or board == "hytiny_stm32f103t" or env.BoardConfig().get('build.is_generic', False)
     if upload_protocol in ("stlink", "dfu", "jlink") and is_generic:
         env.Append(CPPDEFINES=["GENERIC_BOOTLOADER"])
 
@@ -180,6 +180,8 @@ def get_linker_script(board, mcu, upload_protocol):
 
         if any(b in board for b in specific_scripts):
             return "%s.ld" % mcu[0:11]
+        elif env.BoardConfig().get('build.linker_script'):
+            return env.BoardConfig().get('build.linker_script')
         elif any(b in board for b in flash_scripts):
             return "flash.ld"
         elif any(b in board for b in jtag_scripts):
@@ -213,7 +215,7 @@ def configure_error_led(board):
     )
 
 board_name = env.subst("$BOARD")
-variant = env.BoardConfig().get('build.variant', get_variant(board_name))
+variant = env.BoardConfig().get('build.board_variant', get_variant(board_name))
 variant_dir = join(FRAMEWORK_DIR, "variants", variant)
 mcu_family = mcu[0:7].upper()
 upload_protocol = env.subst("$UPLOAD_PROTOCOL")
